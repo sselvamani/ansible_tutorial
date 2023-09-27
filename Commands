@@ -1,2 +1,0 @@
-
-ansible all -i ~/ansible_tutorial/inventory  -m ping
