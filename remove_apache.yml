@@ -9,17 +9,17 @@
     apt:
       update_cache: yes
 
-  - name: install apache2 package
+  - name: uninstall apache2 package
     apt:
       name: apache2
       state: absent
 
-  - name: install htop package
+  - name: uninstall htop package
     apt:
       name: htop
       state: absent
 
-  - name: install php support package
+  - name: uninstall php support package
     apt:
       name: libapache2-mod-php
       state: absent
