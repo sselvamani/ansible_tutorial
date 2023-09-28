@@ -12,15 +12,15 @@
   - name: install apache2 package
     apt:
       name: apache2
-      state: latest
+      state: absent
 
   - name: install htop package
     apt:
       name: htop
-      state: latest
+      state: absent
 
   - name: install php support package
     apt:
       name: libapache2-mod-php
-      state: latest
+      state: absent
 
