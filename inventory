@@ -1,7 +1,9 @@
-
+[ubuntu]
 hosta1
 hosta2
 hosta3
+
+[centos]
 hostac1
 hostac2
 hostac3
