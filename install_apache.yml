@@ -3,12 +3,16 @@
 - hosts: all
   become: true
   tasks:
+#ubuntu
 
    - name: update repository index
      apt:
        update_cache: yes
      when: ansible_distribution == "Ubuntu"
    - name: install apache2 package
+
+
+
      apt:
        name: apache2
        state: latest
