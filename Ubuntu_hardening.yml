@@ -1,28 +1,33 @@
 ---
-- name: Harden Ubuntu Linux
-  hosts: your_server  # Replace with the target server(s) or group(s)
-  become: yes
+- hosts: security
+  become: true
   tasks:
-
     - name: Update system software
       apt:
         update_cache: yes
         upgrade: dist
-
-    - name: Configure UFW (Uncomplicated Firewall)
+# installing teh ufw firewall
+    - name: Install UFW (Uncomplicated Firewall)
+      apt:
+        name: ufw
+        state: present
+      become: yes
+      tags: [firewall]
+# configuring the ufw 
+    - name: Configure UFW
       ufw:
         state: enabled
         policy: deny
       become: yes
       tags: [firewall]
-
-    - name: Allow SSH through UFW on the new port 4455
+# ufw allow 22 port 
+    - name: Allow SSH through UFW on port 22
       ufw:
         rule: allow
-        port: 4455
+        port: 22
       become: yes
       tags: [firewall]
-
+# ssh through root user managment 
     - name: Disable root login via SSH
       lineinfile:
         path: /etc/ssh/sshd_config
@@ -31,11 +36,11 @@
       become: yes
       notify: Restart SSH
 
-    - name: Change SSH port to 4455
+    - name: Change SSH port to 22
       lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^Port'
-        line: 'Port 4455'
+        line: 'Port 22'
       become: yes
       notify: Restart SSH
 
@@ -46,7 +51,7 @@
         line: 'PasswordAuthentication no'
       become: yes
       notify: Restart SSH
-
+# installing the auth security tool
     - name: Install and configure Fail2ban
       apt:
         name: fail2ban
@@ -60,7 +65,7 @@
         state: present
       become: yes
       notify: Configure Unattended-Upgrades
-
+#disablethe root user a nologin 
     - name: Set root user to nologin
       user:
         name: root
@@ -68,7 +73,6 @@
       become: yes
 
   handlers:
-
     - name: Restart SSH
       service:
         name: ssh
@@ -78,7 +82,7 @@
       service:
         name: fail2ban
         state: restarted
-
+# allow upgrades 
     - name: Configure Unattended-Upgrades
       command: dpkg-reconfigure --priority=low unattended-upgrades
       become: yes
