@@ -6,7 +6,7 @@ ansible (specific host or group) -m shell -a "uptime"
 #update the cache 
 ansible all -m apt -a update_cache=true --become --ask-become-pass
 
-#  install ubuntu 
+# install ubuntu 
 ansible all -m apt -a name=tmux --become --ask-become-pass
 ansible all -m apt -a name=vim-nox --become --ask-become-pass
 
