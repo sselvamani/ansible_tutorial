@@ -12,7 +12,7 @@
             state: present
           delegate_to: "{{ item }}"
           with_items: "{{ groups['ubuntu'] }}"
-
+      
         - name: Enable Load Balancer with Round Robin
           template:
             src: nginx-loadbalancer.conf.j2
