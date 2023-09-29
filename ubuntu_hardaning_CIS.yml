@@ -1,0 +1,119 @@
+---
+- hosts: security
+  become: true
+  tasks:
+    - name: Update system software
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install UFW (Uncomplicated Firewall)
+      apt:
+        name: ufw
+        state: present
+      become: yes
+      tags: [firewall]
+
+    - name: Configure UFW
+      ufw:
+        state: enabled
+        policy: deny
+      become: yes
+      tags: [firewall]
+
+    - name: Allow SSH through UFW on port 22
+      ufw:
+        rule: allow
+        port: 22
+      become: yes
+      tags: [firewall]
+
+    - name: Disable root login via SSH
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+      become: yes
+      notify: Restart SSH
+
+    - name: Change SSH port to 22
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^Port'
+        line: 'Port 22'
+      become: yes
+      notify: Restart SSH
+
+    - name: Disable password-based SSH authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+      become: yes
+      notify: Restart SSH
+
+    - name: Install and configure Fail2ban
+      apt:
+        name: fail2ban
+        state: present
+      become: yes
+      notify: Restart Fail2ban
+
+    - name: Enable automatic security updates
+      apt:
+        name: unattended-upgrades
+        state: present
+      become: yes
+      notify: Configure Unattended-Upgrades
+
+    - name: Set password expiration policy for all users
+      pam_pwquality:
+        enforce_for: all
+        retry: 3
+        minlen: 14
+        minclass: 4
+        maxrepeat: 3
+        maxclassrepeat: 3
+        maxsequence: 3
+        minclass: 4
+        reject_username: yes
+      become: yes
+
+    - name: Disable unused filesystems
+      lineinfile:
+        path: /etc/modprobe.d/CIS.conf
+        line: "install cramfs /bin/true"
+      become: yes
+
+    - name: Configure password policy for root
+      command: >
+        chage --maxdays 30 root
+      become: yes
+
+    - name: Configure core dumps
+      command: >
+        echo "* hard core 0" > /etc/security/limits.conf
+      become: yes
+
+    # Add more CIS benchmark tasks here...
+
+  handlers:
+    - name: Restart SSH
+      service:
+        name: ssh
+        state: restarted
+      become: yes
+
+    - name: Restart Fail2ban
+      service:
+        name: fail2ban
+        state: restarted
+      become: yes
+
+    - name: Configure Unattended-Upgrades
+      command: dpkg-reconfigure --priority=low unattended-upgrades
+      become: yes
+
+    # Add more handlers for service restarts...
+
+  tags: [ubuntu_cis_hardening]
