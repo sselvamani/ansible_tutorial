@@ -1,6 +1,6 @@
 ---
 
-- hosts: all
+- hosts: ubuntu
   become: true
   tasks:
 #ubuntu
@@ -8,7 +8,7 @@
    - name: update repository index
      apt:
        update_cache: yes
-     when: ansible_distribution == "Ubuntu"
+     #when: ansible_distribution == "Ubuntu"
    - name: install apache2 package
 
 
@@ -21,8 +21,13 @@
      apt:
        name: libapache2-mod-php
        state: latest
-     when: ansible_distribution == "Ubuntu"
+     #when: ansible_distribution == "Ubuntu"
 #centOS 
+
+- hosts: centos
+  become: true
+  tasks:
+
    - name: update repository index
      dnf:
       update_cache: yes
