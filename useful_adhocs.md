@@ -1,5 +1,6 @@
 #Ping remote hosts 
 ansible all -m ping
+
 #check hosts uptime 
 ansible (specific host or group) -m shell -a "uptime"
 
