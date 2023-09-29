@@ -11,9 +11,10 @@
       with_items: "{{ groups['ubuntu'] }}"
     
     - name: Enable Load Balancer with Round Robin
-      lineinfile:
-        path: /etc/nginx/conf.d/loadbalancer.conf
-        line: |
+      blockinfile:
+        path: /etc/nginx/nginx.conf
+        marker: "# {mark} START Load Balancer Configuration"
+        block: |
           upstream backend {
               {% for host in groups['ubuntu'] %}
               server {{ hostvars[host].ansible_host }};
