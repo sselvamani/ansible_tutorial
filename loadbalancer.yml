@@ -1,39 +1,55 @@
 ---
-- hosts: security
-  become: true
+- name: Configure Nginx Load Balancer
+  hosts: ubuntu
+  become: yes
   tasks:
-    - name: Configure Nginx Load Balancer
-      hosts: ubuntu
-      become: yes
-      tasks:
-        - name: Install Nginx
-          apt:
-            name: nginx
-            state: present
-          delegate_to: "{{ item }}"
-          with_items: "{{ groups['ubuntu'] }}"
-      
-        - name: Enable Load Balancer with Round Robin
-          template:
-            src: nginx-loadbalancer.conf.j2
-            dest: /etc/nginx/conf.d/loadbalancer.conf
-          notify: Reload Nginx
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['ubuntu'] }}"
+    
+    - name: Enable Load Balancer with Round Robin
+      lineinfile:
+        path: /etc/nginx/conf.d/loadbalancer.conf
+        line: |
+          upstream backend {
+              {% for host in groups['ubuntu'] %}
+              server {{ hostvars[host].ansible_host }};
+              {% endfor %}
+          }
 
-        - name: Add Host Entry to /etc/hosts
-          lineinfile:
-            path: /etc/hosts
-            line: "{{ item }} nginx"
-          with_items:
-            - "192.168.10.30"
-            - "192.168.10.31"
-            - "192.168.10.32"
-          notify: Reload Nginx
+          server {
+              listen 192.168.10.33:80;
+              location / {
+                  proxy_pass http://backend;
+              }
+          }
+      notify: Reload Nginx
 
-        - name: Customize Nginx Default Page
-          template:
-            src: nginx-default-page.conf.j2
-            dest: /usr/share/nginx/html/index.html
-          notify: Reload Nginx
+    - name: Add Host Entry to /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ hostvars[item]['ansible_host'] }} nginx"
+      with_items: "{{ groups['ubuntu'] }}"
+      notify: Reload Nginx
+
+    - name: Customize Nginx Default Page
+      copy:
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Welcome to Nginx</title>
+          </head>
+          <body>
+              <h1>Welcome to Nginx!</h1>
+              <p>Server ({{ ansible_hostname }})</p>
+          </body>
+          </html>
+        dest: /usr/share/nginx/html/index.html
+      notify: Reload Nginx
 
   handlers:
     - name: Reload Nginx
