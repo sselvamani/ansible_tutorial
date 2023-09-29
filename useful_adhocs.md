@@ -1,10 +1,10 @@
-#Ping remote hosts 
+# Ping remote hosts 
 ansible all -m ping
 
-#check hosts uptime 
+# check hosts uptime 
 ansible (specific host or group) -m shell -a "uptime"
 
-#update the cache 
+# update the cache 
 ansible all -m apt -a update_cache=true --become --ask-become-pass
 
 # install ubuntu 
