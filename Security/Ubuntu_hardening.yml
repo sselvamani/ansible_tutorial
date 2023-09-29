@@ -1,0 +1,86 @@
+---
+- name: Harden Ubuntu Linux
+  hosts: your_server  # Replace with the target server(s) or group(s)
+  become: yes
+  tasks:
+
+    - name: Update system software
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Configure UFW (Uncomplicated Firewall)
+      ufw:
+        state: enabled
+        policy: deny
+      become: yes
+      tags: [firewall]
+
+    - name: Allow SSH through UFW on the new port 4455
+      ufw:
+        rule: allow
+        port: 4455
+      become: yes
+      tags: [firewall]
+
+    - name: Disable root login via SSH
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+      become: yes
+      notify: Restart SSH
+
+    - name: Change SSH port to 4455
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^Port'
+        line: 'Port 4455'
+      become: yes
+      notify: Restart SSH
+
+    - name: Disable password-based SSH authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+      become: yes
+      notify: Restart SSH
+
+    - name: Install and configure Fail2ban
+      apt:
+        name: fail2ban
+        state: present
+      become: yes
+      notify: Restart Fail2ban
+
+    - name: Enable automatic security updates
+      apt:
+        name: unattended-upgrades
+        state: present
+      become: yes
+      notify: Configure Unattended-Upgrades
+
+    - name: Set root user to nologin
+      user:
+        name: root
+        shell: /usr/sbin/nologin
+      become: yes
+
+  handlers:
+
+    - name: Restart SSH
+      service:
+        name: ssh
+        state: restarted
+
+    - name: Restart Fail2ban
+      service:
+        name: fail2ban
+        state: restarted
+
+    - name: Configure Unattended-Upgrades
+      command: dpkg-reconfigure --priority=low unattended-upgrades
+      become: yes
+
+  tags: [ubuntu_hardening]
