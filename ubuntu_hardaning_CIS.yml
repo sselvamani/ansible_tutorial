@@ -66,30 +66,6 @@
       become: yes
       notify: Configure Unattended-Upgrades
 
-    - name: Set password expiration policy for all users
-      pam_pwquality:
-        enforce_for: all
-        retry: 3
-        minlen: 14
-        minclass: 4
-        maxrepeat: 3
-        maxclassrepeat: 3
-        maxsequence: 3
-        minclass: 4
-        reject_username: yes
-      become: yes
-
-    - name: Disable unused filesystems
-      lineinfile:
-        path: /etc/modprobe.d/CIS.conf
-        line: "install cramfs /bin/true"
-      become: yes
-
-    - name: Configure password policy for root
-      command: >
-        chage --maxdays 30 root
-      become: yes
-
     - name: Configure core dumps
       command: >
         echo "* hard core 0" > /etc/security/limits.conf
