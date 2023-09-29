@@ -2,38 +2,38 @@
 - hosts: security
   become: true
   tasks:
-- name: Configure Nginx Load Balancer
-  hosts: ubuntu
-  become: yes
-  tasks:
-    - name: Install Nginx
-      apt:
-        name: nginx
-        state: present
-      delegate_to: "{{ item }}"
-      with_items: "{{ groups['ubuntu'] }}"
-    
-    - name: Enable Load Balancer with Round Robin
-      template:
-        src: nginx-loadbalancer.conf.j2
-        dest: /etc/nginx/conf.d/loadbalancer.conf
-      notify: Reload Nginx
+    - name: Configure Nginx Load Balancer
+      hosts: ubuntu
+      become: yes
+      tasks:
+        - name: Install Nginx
+          apt:
+            name: nginx
+            state: present
+          delegate_to: "{{ item }}"
+          with_items: "{{ groups['ubuntu'] }}"
 
-    - name: Add Host Entry to /etc/hosts
-      lineinfile:
-        path: /etc/hosts
-        line: "{{ item }} nginx"
-      with_items:
-        - "192.168.10.30
-        - "192.168.10.31"
-        - "192.168.10.32"
-      notify: Reload Nginx
+        - name: Enable Load Balancer with Round Robin
+          template:
+            src: nginx-loadbalancer.conf.j2
+            dest: /etc/nginx/conf.d/loadbalancer.conf
+          notify: Reload Nginx
 
-    - name: Customize Nginx Default Page
-      template:
-        src: nginx-default-page.conf.j2
-        dest: /usr/share/nginx/html/index.html
-      notify: Reload Nginx
+        - name: Add Host Entry to /etc/hosts
+          lineinfile:
+            path: /etc/hosts
+            line: "{{ item }} nginx"
+          with_items:
+            - "192.168.10.30"
+            - "192.168.10.31"
+            - "192.168.10.32"
+          notify: Reload Nginx
+
+        - name: Customize Nginx Default Page
+          template:
+            src: nginx-default-page.conf.j2
+            dest: /usr/share/nginx/html/index.html
+          notify: Reload Nginx
 
   handlers:
     - name: Reload Nginx
