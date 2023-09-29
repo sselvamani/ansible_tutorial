@@ -3,11 +3,12 @@
   hosts: 192.168.10.37
   remote_user: ka
   become: yes
+#set the python path to use ansible latest version
   tasks:
     - name: Install Python 3
       raw: test -e /usr/bin/python3 || (dnf install -y python3 && alternatives --set python /usr/bin/python3)
       changed_when: false
-
+#install the requied packages 
     - name: Install dnf
       package:
         name: dnf
@@ -17,6 +18,7 @@
   hosts: 192.168.10.37
   remote_user: ka
   become: yes
+# Set the hostentry on the target hosts 
   tasks:
     - name: Add host entries to /etc/hosts
       lineinfile:
@@ -31,3 +33,5 @@
         - "192.168.10.35 hostac1"
         - "192.168.10.36 hostac2"
         - "192.168.10.37 hostac3"
+
+# Make sure created a local user with sudo privilage.ssh login with the username.step2 .Install latest python.also set the "sudo alternatives --set python /usr/bin/python3".
