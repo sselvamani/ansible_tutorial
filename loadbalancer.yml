@@ -3,6 +3,11 @@
   hosts: ubuntu
   become: yes
   tasks:
+    - name: Update system software
+      apt:
+        update_cache: yes
+        upgrade: dist
+    
     - name: Install Nginx
       apt:
         name: nginx
