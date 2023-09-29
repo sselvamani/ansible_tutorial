@@ -1,26 +1,45 @@
 ---
 
-# add the host names
-- hosts: ubuntu
+- hosts: all
   become: true
   tasks:
 
-  - name: update repository index
-    apt:
+   - name: update repository index
+     apt:
+       update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+   - name: install apache2 package
+     apt:
+       name: apache2
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+   - name: install php support package
+     apt:
+       name: libapache2-mod-php
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+#centOS 
+   - name: update repository index
+     dnf:
       update_cache: yes
+      use_backend: dnf4
+     when: ansible_distribution == "CentOS"
 
-  - name: install apache2 package
-    apt:
-      name: apache2
-      state: latest
+   - name: install httpd package
+     dnf:
+       name: httpd
+       state: latest 
+       use_backend: dnf4
+     when: ansible_distribution == "CentOS"
 
-  - name: install htop package
-    apt:
-      name: htop
-      state: latest
+   - name: install php support package
+     dnf:
+       name: php
+       state: latest
+       use_backend: dnf4
+     when: ansible_distribution == "CentOS"
+  
 
-  - name: install php support package
-    apt:
-      name: libapache2-mod-php
-      state: latest
+    
 
+    

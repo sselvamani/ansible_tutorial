@@ -1,7 +1,7 @@
 ---
 
 # add the host names
-- hosts: ubuntu
+- hosts: all
   become: true
   tasks:
 

@@ -1,8 +1,6 @@
-[ubuntu]
-hosta1
-hosta2
-hosta3
 
-[centos]
+#hosta1
+#hosta2
+#hosta3
 hostac1
 hostac2
