@@ -3,7 +3,9 @@
 #updating the ubntu and centOS 
 - hosts: all
   become: true
-  tasks:
+  pre_tasks:
+
+
    - name: install updates (CentOS)
      dnf:
        update_only : yes
@@ -43,3 +45,24 @@
        state: latest 
        use_backend: dnf4
      when: ansible_distribution == "CentOS"
+
+
+- hosts: db_servers
+  become: true
+  tasks:
+  #centOS
+   - name: install Database  packages
+     dnf:
+       name: 
+         - mariadb
+       state: absent 
+       use_backend: dnf4
+     when: ansible_distribution == "CentOS"
+
+  #ubuntu
+   - name: install Database server on Ubuntu
+     apt:
+       name: 
+         - mariadb-server
+       state: latest
+     when: ansible_distribution == "Ubuntu"
