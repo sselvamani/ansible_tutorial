@@ -1,0 +1,20 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+   - name: install multiple packages
+     package:
+       name: 
+         - "{{ apache_package }}"
+         - "{{php_package}}" 
+       state: absent
+       update_cache : yes
+       #but we need to hard code the variables on the inventory hosts as below 
+        
+#hosta1 apache_package=apache2 php_package=libapache2-mod-php
+#hosta2 apache_package=apache2 php_package=libapache2-mod-php
+#hosta3 apache_package=apache2 php_package=libapache2-mod-php
+#hostac1 apache_package=httpd php_package=php
+#hostac2 apache_package=httpd php_package=php
