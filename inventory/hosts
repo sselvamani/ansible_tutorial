@@ -1,13 +1,10 @@
 # All the remote hosts inentory . Each are grouped 
 
-[all]
 
-[ubuntu]
-hosta1
-hosta2
-hosta3
+hosta1 apache_package=apache2 php_package=libapache2-mod-php
+hosta2 apache_package=apache2 php_package=libapache2-mod-php
+hosta3 apache_package=apache2 php_package=libapache2-mod-php
 
-[centos]
-hostac1
-hostac2
-hostac3
+
+hostac1 apache_package=httpd php_package=php
+hostac2 apache_package=httpd php_package=php

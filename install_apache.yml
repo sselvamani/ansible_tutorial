@@ -1,49 +1,18 @@
 ---
 
-- hosts: ubuntu
-  become: true
-  tasks:
-#ubuntu
-
-   - name: update repository index
-     apt:
-       update_cache: yes
-     #when: ansible_distribution == "Ubuntu"
-   - name: install apache2 package
-     apt:
-       name: apache2
-       state: absent
-     when: ansible_distribution == "Ubuntu"
-   - name: install php support package
-     apt:
-       name: libapache2-mod-php
-       state: absent
-     #when: ansible_distribution == "Ubuntu"
-#centOS 
-
-- hosts: centos
+- hosts: all
   become: true
   tasks:
 
-   - name: update repository index
-     dnf:
-      update_cache: yes
-      use_backend: dnf4
-     #when: ansible_distribution == "CentOS"
-
-   - name: install httpd package
-     dnf:
-       name: httpd
-       state: absent 
-       use_backend: dnf4
-     #when: ansible_distribution == "CentOS"
-
-   - name: install php support package
-     dnf:
-       name: php
+   - name: install multiple packages
+     package:
+       name: 
+         - "{{ apache_package }}"
+         - "{{php_package}}" 
        state: absent
-       use_backend: dnf4
-    # when: ansible_distribution == "CentOS"
+       update_cache : yes
+     
+
   
 
     
