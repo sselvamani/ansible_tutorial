@@ -3,7 +3,7 @@
 # ping the host from controler . Install python3 and dnf through adhoc commands . ansible all -m apt -a "name=python3 state=latest" --become --ask-become-pass, ansible all -m apt -a "name=dnf state=latest" --become --ask-become-pass .
 
 - name: Setup Environment
-  hosts: 192.168.10.37
+  hosts: hostac3
   remote_user: ka
   become: yes
 
@@ -21,7 +21,7 @@
 
 # Set the hosts entry on the target hosts 
 - name: Update Hosts File
-  hosts: 192.168.10.37
+  hosts: hostac3
   remote_user: ka
   become: yes
   tasks:

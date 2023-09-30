@@ -1,6 +1,6 @@
 # All the remote hosts inentory . Each are grouped 
 [new]
-192.168.10.38
+hostac3
 
 [web_servers]
 hosta1
