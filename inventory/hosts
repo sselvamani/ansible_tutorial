@@ -1,3 +1,4 @@
+# All the remote hosts inentory . Each are grouped 
 [ubuntu]
 hosta1
 hosta2
@@ -7,5 +8,3 @@ hosta3
 hostac1
 hostac2
 hostac3O
-
-
