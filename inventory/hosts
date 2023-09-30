@@ -1,5 +1,7 @@
 # All the remote hosts inentory . Each are grouped 
 
+192.168.10.38
+
 [web_servers]
 hosta1
 hosta2

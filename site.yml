@@ -51,12 +51,19 @@
   become: true
   tasks:
   #centOS
-   - name: install Database  packages
-     dnf:
+
+   - name: Install MariaDB on CentOS
+     yum: 
        name: 
-         - mariadb
-       state: absent 
-       use_backend: dnf4
+        - mariadb-server
+     state: present
+     #use_backend: dnf4
+     
+     systemd:
+        name: 
+        - mariadb
+        state: started
+        enabled: yes
      when: ansible_distribution == "CentOS"
 
   #ubuntu
