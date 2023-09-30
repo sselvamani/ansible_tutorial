@@ -20,7 +20,7 @@
         policy: deny
       become: yes
       tags: [firewall]
-# ufw allow 22 port 
+# ufw allow 22 port .Can be use alternate port. close 22 .
     - name: Allow SSH through UFW on port 22
       ufw:
         rule: allow
