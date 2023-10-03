@@ -1,0 +1,24 @@
+
+
+ansible web -i inventory -m ping
+ansible all --list-hosts
+ansible web -i inventory -m command -a 'df -hk'
+ansible-doc -l | more | wc -l
+ansible-doc yum
+ansible web -i inventory -m user -a "name={{username}} password={{ 'password' | password_hash('sha512') }}"
+ansible web -i inventory -m yum -a "name=httpd state=present"
+ansible web -i inventory -m service -a "name=httpd enabled=yes state=started"
+ansible web -i inventory -m yum -a "name=httpd state=absent"
+ansible web:db -i inventory -m service -a "name=httpd enabled=yes state=started"
+ansible db -i inventory -m setup -a "filter=ansible_mounts"
+ansible all -i inventory -m setup --tree ./setup
+ansible prod -i hosts -a "hostname"
+ansible prod -i hosts -a "df -hk"
+ansible localhost -m debug -a 'var=groups.keys()'
+ansible prod -m stat -a "path=/etc/environment"
+ansible prod -m copy -a "src=/etc/hosts dest=/tmp/hosts"
+ansible prod -m fetch -a "src=/etc/hosts dest=/root"
+ansible prod -m file -a "dest=/tmp/test mode=644 state=directory"
+ansible prod -m file -a "dest=/tmp/test state=absent"
+ansible prod  -m shell -a "tail /var/log/messages | grep ansible-command | wc -l 
+
