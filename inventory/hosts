@@ -12,3 +12,6 @@ hostac2
 
 [file_servers]
 hosta3
+
+# to use old verion python .set the variable 
+# hostname  ansible_python_interpeter=/usr/bin/python
