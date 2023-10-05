@@ -1,6 +1,7 @@
 # All the remote hosts inentory . Each are grouped 
 [new]
 hostac3
+hostac1
 
 [web_servers]
 hosta1
