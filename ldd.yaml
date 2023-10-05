@@ -1,0 +1,60 @@
+---
+- name: Execute ldd command and filter lines containing GLIBC
+  hosts: ldd
+  gather_facts: false
+
+  tasks:
+    - name: Run ldd command with --version
+      command: "ldd --version ldd"
+      register: ldd_version_output1
+      changed_when: false
+
+    - name: Filter lines containing GLIBC using regex
+      set_fact:
+        filtered_output1: "{{ ldd_version_output1.stdout_lines | select('match', '.*GLIBC.*') | list }}"
+
+    - name: Update apt repository and cache on Ubuntu
+      apt:
+        update_cache: yes
+        force_apt_get: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade all packages on servers
+      apt:
+        upgrade: dist
+        force_apt_get: yes
+
+    - name: Run ldd command with --version
+      command: "ldd --version ldd"
+      register: ldd_version_output2
+      changed_when: false
+
+    - name: Filter lines containing GLIBC using regex
+      set_fact:
+        filtered_output2: "{{ ldd_version_output2.stdout_lines | select('match', '.*GLIBC.*') | list }}"
+
+    - name: Display the filtered lines
+      debug:
+        msg: >
+          {{filtered_output1}} =>
+
+          {{filtered_output2}}
+
+    #  reboot the host
+
+    - name: Check if a reboot is needed on all servers
+      register: reboot_required_file
+      stat: path=/var/run/reboot-required get_md5=no
+
+    - name: print whether reboot required flag
+      debug:
+        var: reboot_required_file
+    - name: Reboot the box if kernel updated
+      reboot:
+        msg: "Reboot initiated by Ansible for kernel updates"
+        connect_timeout: 5
+        reboot_timeout: 300
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: uptime
+      when: reboot_required_file.stat.exists
