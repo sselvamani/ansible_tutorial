@@ -4,7 +4,6 @@ hostac3
 hostac1
 
 [web_servers]
-hosta1
 hosta2
 hostac1
 
@@ -13,6 +12,9 @@ hostac2
 
 [file_servers]
 hosta3
+
+[ldd]
+hosta1
 
 # to use old verion python .set the variable 
 # hostname  ansible_python_interpeter=/usr/bin/python

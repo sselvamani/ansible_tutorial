@@ -22,3 +22,6 @@ ansible prod -m file -a "dest=/tmp/test mode=644 state=directory"
 ansible prod -m file -a "dest=/tmp/test state=absent"
 ansible prod  -m shell -a "tail /var/log/messages | grep ansible-command | wc -l 
 
+
+ansibe all -i hosts -a "ldd --version ldd"
+
