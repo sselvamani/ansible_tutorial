@@ -1,1 +1,0 @@
-ansible -list-host
