@@ -1,0 +1,41 @@
+---
+- name: Playbook with Multiple Python Versions
+  hosts: all
+  tasks:
+    - name: Ensure Python Versions for Hosts
+      hosts:
+        - hostA
+        - hostB
+      vars:
+        ansible_python_interpreter: "/usr/bin/python{{ item }}"
+      loop:
+        - 2.7
+        - 3.4
+        - 3.6
+        - 3.7
+        - 3.8
+        - 3.9
+        - 3.10
+
+
+
+
+# ---
+# - name: Playbook with Multiple Python Versions
+#   hosts: all
+#   tasks:
+#     - name: Ensure Python3.6 for HostA
+#       hosts: hostA
+#       vars:
+#         ansible_python_interpreter: /usr/bin/python3.6
+#       tasks:
+#         - name: Your task here
+#           # Your task definition here
+    
+#     - name: Ensure Python3.7 for HostB
+#       hosts: hostB
+#       vars:
+#         ansible_python_interpreter: /usr/bin/python3.7
+#       tasks:
+#         - name: Your task here
+#           # Your task definition here

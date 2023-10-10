@@ -1,0 +1,19 @@
+# ansible-playbook check_ansibleuser.yml --become --ask-become-pass -u testuser --become-method sudo
+---
+- name: Check User Availability
+  hosts: ldd
+  gather_facts: yes  # You can set this to 'yes' if you want to gather facts
+  become: yes 
+
+  vars:
+    username: "ka"
+
+  tasks:
+    - name: Check if the user exists
+      shell: getent passwd {{username}}
+      register: user_check
+      ignore_errors: yes
+
+    - name: Display user availability status
+      debug:
+        msg: "User {{ username }} is {{ 'present' if user_check.rc == 0 else 'absent' }}"
