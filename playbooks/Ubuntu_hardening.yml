@@ -1,5 +1,8 @@
+# Harden the system and update teh host entry to hosts with Master ipaddress 
+# command : ansible-playbook -i inventory/hosts Ubuntu_hardening.yml -K
+
 ---
-- hosts: security
+- hosts: all
   become: true
   tasks:
     - name: Update system software
@@ -86,5 +89,19 @@
     - name: Configure Unattended-Upgrades
       command: dpkg-reconfigure --priority=low unattended-upgrades
       become: yes
+# update host entries ( master node is enough )
+    - name: Add host entries to /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+      with_items:
+        - "172.17.2.128    master"
+        - "172.17.2.129    host1"
+        - "172.17.2.130    host2"
+        - "172.17.2.131    host3"
+        - "172.17.2.132    host4"
+        - "172.17.2.133    host5"
+        - "172.17.2.134    host6"
+        - "172.17.2.135    host7"
 
   tags: [ubuntu_hardening]

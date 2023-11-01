@@ -1,20 +1,35 @@
 # All the remote hosts inentory . Each are grouped 
-[new]
-hostac3
-hostac1
 
-[web_servers]
+[all]
+host1
+host2
+host3
+host4
+host5
+host6
+host7
 
-hostac1
 
-[db_servers]
-hostac2
+[base]
+host1
 
-[file_servers]
-hosta3
+[tomcat]
+host2
 
-[ldd]
-hosta2
+[apache]
+host3
+
+[file]
+host4
+
+[postgres]
+host5
+
+[mongo]
+host6
+
+[maria]
+host7
 
 # to use old verion python .set the variable 
 # hostname  ansible_python_interpeter=/usr/bin/python

@@ -1,0 +1,29 @@
+# ping the host from controler . Install python3 and dnf through adhoc commands . ansible all -m apt -a "name=python3 state=latest" --become --ask-become-pass, ansible all -m apt -a "name=dnf state=latest" --become --ask-become-pass .
+
+# ansible-playbook -i inventory/hosts setup_environment.yml -K
+---
+- name: Setup Environment on Ubuntu Servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
+
+    - name: Add host entries to /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+      with_items:
+        - "172.17.2.128    master"
+        - "172.17.2.129    host1"
+        - "172.17.2.130    host2"
+        - "172.17.2.131    host3"
+        - "172.17.2.132    host4"
+        - "172.17.2.133    host5"
+        - "172.17.2.134    host6"
+        - "172.17.2.135    host7"

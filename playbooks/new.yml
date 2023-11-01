@@ -3,21 +3,39 @@
 # ping the host from controler . Install python3 and dnf through adhoc commands . ansible all -m apt -a "name=python3 state=latest" --become --ask-become-pass, ansible all -m apt -a "name=dnf state=latest" --become --ask-become-pass .
 
 - name: Setup Environment
-  hosts: new
+  hosts: base
   remote_user: ka
   become: yes
 
 #set the python path to use ansible latest version
-  tasks:
-    - name: Install Python 3
-      raw: test -e /usr/bin/python3 || (dnf install -y python3 && alternatives --set python /usr/bin/python3)
-      changed_when: false
+ - name: Ensure Python 3 is installed
+  become: yes
+  become_method: sudo
+  command: /usr/bin/python3 --version
+  ignore_errors: yes
+  register: python_check
 
-#install the requied packages 
-    - name: Install dnf
-      package:
-        name: dnf
-        state: present
+- name: Install Python 3 if not already installed
+  become: yes
+  become_method: sudo
+  apt:
+    name: python3
+    state: present
+  when: "python_check.rc != 0"
+
+- name: Set Python 3 as the default interpreter for Ansible
+  become: yes
+  become_method: sudo
+  alternatives:
+    name: python
+    path: /usr/bin/python3
+
+
+# #install the requied packages 
+#     - name: Install dnf
+#       package:
+#         name: dnf
+#         state: present
 
 # Set the hosts entry on the target hosts 
 - name: Update Hosts File
