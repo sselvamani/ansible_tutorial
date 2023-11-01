@@ -1,14 +1,13 @@
 # All the remote hosts inentory . Each are grouped 
 
-[all]
-host1
-host2
-host3
-host4
-host5
-host6
-host7
-
+# [all]
+# host1
+# host2
+# host3
+# host4
+# host5
+# host6
+# host7
 
 [base]
 host1
