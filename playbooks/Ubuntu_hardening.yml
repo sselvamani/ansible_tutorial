@@ -68,6 +68,10 @@
         state: present
       become: yes
       notify: Configure Unattended-Upgrades
+    - name: Configure core dumps
+      command: >
+        echo "* hard core 0" > /etc/security/limits.conf
+      become: yes
 #disablethe root user a nologin 
     - name: Set root user to nologin
       user:
