@@ -1,16 +1,21 @@
 ---
+
+
 - name: prompt for  Project/Foldername
   hosts: localhost
+  vars:
+    - directory: /home/ka/ansible_tutorial/Ansible
+
   vars_prompt: 
-      - name : Project 
-        prompt : name of the project/customer?
-        private: no 
+      - name: Project 
+        prompt: name of the project/customer?
+        private: no
 
 
-  # task:
+  task:
 
-  #   - name : create project working directory
-  #     file :
-  #       path : "{{directory}}\{{ Project }}\group_vars"
-  #       state: directory
-  #     delegate_to : 172.17.2.128 
+  - name: create project working directory
+    file:
+      path: "{{ directory }}/{{ Project }}/group_vars"
+      state: directory
+    delegate_to: localhost
