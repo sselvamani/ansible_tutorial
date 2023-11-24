@@ -1,16 +1,26 @@
 ## semaphore book auotmation
-
 ---
-- hosts : all
-  become_user: ka
-  become_method: sudo
+- name: Update apt cache
+  hosts: all
+  remote_user: ka
+  become: yes
 
   tasks:
-    - name: Update apt
-      sudo: yes
-      apt: 
-        update_cache: yes 
+    - name: Ensure apt is up to date
+      apt:
+        update_cache: yes
         cache_valid_time: 600
+# ---
+# - hosts : all
+#   become_user: ka
+#   become_method: sudo
+
+#   tasks:
+#     - name: Update apt
+#       sudo: yes
+#       apt: 
+#         update_cache: yes 
+#         cache_valid_time: 600
 
 
 
