@@ -2,13 +2,14 @@
 
 ---
 - hosts : all
-  become : yes
-  # become_user: ka
+  # become : yes
+  become_user: ka
   tasks:
     - name : update apt packages
       apt:
         upgrade: yes
         update_cache: yes
         force_apt_get: yes
+
 
 
