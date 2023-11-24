@@ -2,7 +2,8 @@
 
 ---
 - hosts : all
-  # become : yes
+  become : true
+  become_method: sudo
   # become_user: ka
   tasks:
     - name : update apt packages
