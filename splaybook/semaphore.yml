@@ -11,9 +11,9 @@
         update_cache: yes
         cache_valid_time: 600
         
-  vars:
-    ansible_ssh_private_key_file: /etc/ssh/ssh_host_ed25519_key.pub
-    
+  # vars:
+  #   ansible_ssh_private_key_file: /etc/ssh/ssh_host_ed25519_key.pub
+
 # ---
 # - hosts : all
 #   become_user: ka
