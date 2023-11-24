@@ -2,7 +2,7 @@
 
 ---
 - hosts : all
-  become : true
+  # become : true
   become_user: ka
   tasks:
     - name : update apt packages
