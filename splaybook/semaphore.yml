@@ -2,15 +2,18 @@
 
 ---
 - hosts : all
-  become : yes
-  become_user: ka
+    become_user: ka
   become_method: sudo
 
   tasks:
+
     - name: Update apt
+      become : yes
+      sudo: yes
       apt: 
         update_cache: yes 
         cache_valid_time: 600
+        
 
 
 
