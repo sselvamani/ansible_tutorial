@@ -2,7 +2,7 @@
 
 ---
 - hosts : all
-    become_user: ka
+  become_user: ka
   become_method: sudo
 
   tasks:
@@ -13,7 +13,7 @@
       apt: 
         update_cache: yes 
         cache_valid_time: 600
-        
+
 
 
 
