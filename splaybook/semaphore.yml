@@ -4,6 +4,8 @@
 - hosts : all
   # become : yes
   become_user: ka
+  sudo: true
+  
   tasks:
     - name : update apt packages
       apt:
