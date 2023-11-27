@@ -5,9 +5,7 @@
   become_user: ka
   become: yes
 
-
   tasks:
-
     - name: Ensure apt is up to date
       apt:
         update_cache: yes
