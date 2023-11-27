@@ -2,10 +2,14 @@
 ---
 - name: Update apt cache
   hosts: all
-  remote_user: ka
+  become_user: ka
   become: yes
 
+
   tasks:
+    - name: Gathering Facts
+      gather_facts: true
+
     - name: Ensure apt is up to date
       apt:
         update_cache: yes
