@@ -7,8 +7,6 @@
 
 
   tasks:
-    - name: Gathering Facts
-      gather_facts: true
 
     - name: Ensure apt is up to date
       apt:
